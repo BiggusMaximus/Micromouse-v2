@@ -15,6 +15,6 @@ float read_ultrasonic(int trigPin, int echoPin)
     long duration = pulseIn(echoPin, HIGH);
 
     // Convert the time into a distance
-    long cm = (duration / 2) / 29.1;
+    float cm = (duration / 2.0) / 29.1;
     return cm;
 }

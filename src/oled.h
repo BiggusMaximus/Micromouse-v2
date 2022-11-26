@@ -19,7 +19,7 @@ void start_display()
     display.clearDisplay();
 }
 
-void display_selector(uint8_t select, uint8_t kp, uint8_t ki, uint8_t kd)
+void display_selector(uint16_t select, float kp, float ki, float kd, float size_number)
 {
 
     display.setTextSize(1);
@@ -34,6 +34,8 @@ void display_selector(uint8_t select, uint8_t kp, uint8_t ki, uint8_t kd)
         display.print("ki : " + String(ki));
         display.setCursor(0, 20);
         display.print("kd : " + String(kd));
+        display.setCursor(70, 20);
+        display.print("S:" + String(size_number));
         select++;
     }
     else if (select == 2)
@@ -47,6 +49,8 @@ void display_selector(uint8_t select, uint8_t kp, uint8_t ki, uint8_t kd)
         display.setTextColor(WHITE);
         display.setCursor(0, 20);
         display.print("kd : " + String(kd));
+        display.setCursor(70, 20);
+        display.print("S:" + String(size_number));
         select++;
     }
     else if (select == 3)
@@ -56,19 +60,32 @@ void display_selector(uint8_t select, uint8_t kp, uint8_t ki, uint8_t kd)
         display.print("kp : " + String(kp));
         display.setCursor(0, 10);
         display.print("ki : " + String(ki));
+        display.setCursor(70, 20);
+        display.print("S:" + String(size_number));
         display.setTextColor(BLACK, WHITE);
         display.setCursor(0, 20);
         display.print("kd : " + String(kd));
     }
+    else if (select == 4)
+    {
+        display.setTextColor(WHITE);
+        display.setCursor(0, 0);
+        display.print("kp : " + String(kp));
+        display.setCursor(0, 10);
+        display.print("ki : " + String(ki));
+        display.setCursor(0, 20);
+        display.print("kd : " + String(kd));
+        display.setTextColor(BLACK, WHITE);
+        display.setCursor(70, 20);
+        display.print("S:" + String(size_number));
+    }
 }
 
-void display_ultrasonic(uint8_t front, uint8_t right, uint8_t left)
+void display_ultrasonic(float front, float right, float left)
 {
     display.setTextColor(WHITE);
-    display.setCursor(50, 0);
-    display.print("front : " + String(front));
-    display.setCursor(50, 10);
-    display.print("right : " + String(right));
-    display.setCursor(50, 20);
-    display.print("left : " + String(left));
+    display.setCursor(70, 0);
+    display.print("F:" + String(front));
+    display.setCursor(70, 10);
+    display.print("R:" + String(right));
 }
