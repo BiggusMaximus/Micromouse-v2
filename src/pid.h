@@ -87,3 +87,55 @@ void pid(float Kp, float Ki, float Kd, float depan, float kanan)
         analogWrite(pwm2, pwmKi);
     }
 }
+
+void pid_open_loop(float depan, float kanan)
+{
+    unsigned long lastTime = 0;
+    if (kanan > 20)
+    {
+        kanan = 20;
+    }
+    else
+    {
+        kanan = kanan;
+    }
+
+    if (depan <= 4)
+    {
+        digitalWrite(dir1, HIGH);
+        digitalWrite(dir2, LOW);
+        analogWrite(pwm1, 155);
+        analogWrite(pwm2, 100);
+    }
+
+    else
+    {
+        digitalWrite(dir1, HIGH);
+        digitalWrite(dir2, HIGH);
+        pwmA = basePWM;
+        if (pwmA > Upper)
+        {
+            pwmA = Upper;
+        }
+        if (pwmA < Lower)
+        {
+            pwmA = Lower;
+        }
+        pwmKa = pwmA;
+
+        pwmB = basePWM;
+        if (pwmB > Upper)
+        {
+            pwmB = Upper;
+        }
+        if (pwmB < Lower)
+        {
+            pwmB = Lower;
+        }
+        pwmKi = pwmB;
+
+        analogWrite(pwm1, pwmKa);
+        analogWrite(pwm2, pwmKi);
+    }
+    Serial.println(kanan);
+}

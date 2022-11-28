@@ -55,6 +55,10 @@ void debugging(String val)
     {
       Serial.println("size : " + String(size_number) + ", Kp : " + String(kp) + ", Ki : " + String(ki) + ", Kd : " + String(kd));
     }
+    else if (val == "send")
+    {
+      Serial.println("Kp:" + String(kp) + ",Ki:" + String(ki) + ",Kd:" + String(kd) + ",F:" + String(front) + ",R:" + String(right));
+    }
     lastTime = millis();
   }
 }
@@ -109,6 +113,5 @@ void loop()
   pid(kp, ki, kd, front, right);
   display_ultrasonic(front, right, 0);
   display.display();
-  Serial.println("Kp:" + String(kp) + ",Ki:" + String(ki) + ",Kd:" + String(kd) + ",F:" + String(front) + ",R:" + String(right));
   read_bluetooth();
 }
