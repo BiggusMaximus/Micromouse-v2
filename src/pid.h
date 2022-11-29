@@ -12,7 +12,7 @@ int Upper = 255;
 int Lower = 15;
 int basePWM = 50;
 
-float sp = 5.00;
+float sp = 10.00;
 float dt = 0.001;
 float error, integralE, derivativeE, lastError;
 float PID;
@@ -90,7 +90,6 @@ void pid(float Kp, float Ki, float Kd, float depan, float kanan)
 
 void pid_open_loop(float depan, float kanan)
 {
-    unsigned long lastTime = 0;
     if (kanan > 20)
     {
         kanan = 20;
@@ -137,5 +136,11 @@ void pid_open_loop(float depan, float kanan)
         analogWrite(pwm1, pwmKa);
         analogWrite(pwm2, pwmKi);
     }
-    Serial.println(kanan);
+}
+
+void stop_motor(){
+    digitalWrite(dir1, HIGH);
+    digitalWrite(dir2, LOW);
+    analogWrite(pwm1, 0);
+    analogWrite(pwm2, 0);
 }

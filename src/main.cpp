@@ -21,6 +21,7 @@ float size_number;
 float front, left, right;
 unsigned long timerDelay = 3000;
 unsigned long lastTime = 0;
+bool pid_status = true;
 
 void debugging(String val)
 {
@@ -103,14 +104,18 @@ void loop()
   {
     size_number = change_size();
   }
-  if ((millis() - lastTime) > 500)
-  {
-    front = read_ultrasonic(trig2, echo2);
-    right = read_ultrasonic(trig1, echo1);
-    lastTime = millis();
+  front = read_ultrasonic(trig2, echo2);
+  right = read_ultrasonic(trig1, echo1);
+  
+  byte pid_button = set_pid();
+  if(pid_button == 1){
+    pid(kp, ki, kd, front, right);
+    Serial.println(right);
+  }else{
+    stop_motor();
   }
+
   display_selector(counter[0], kp, ki, kd, size_number);
-  pid(kp, ki, kd, front, right);
   display_ultrasonic(front, right, 0);
   display.display();
   read_bluetooth();

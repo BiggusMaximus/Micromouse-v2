@@ -1,8 +1,8 @@
-#define noOfButtons 3
+#define noOfButtons 4
 #define bounceDelay 20
 #define minButtonPress 3
 
-const int buttonPins[] = {A0, A1, A2};
+const int buttonPins[] = {A0, A1, A2, A3};
 uint32_t previousMillis[noOfButtons];
 uint8_t pressCount[noOfButtons];
 uint8_t counter[noOfButtons];
@@ -134,4 +134,34 @@ float change_size()
         select_size = 0;
     }
     return size[select_size];
+}
+
+byte set_pid(){
+    long currentMillis = millis();
+
+    // If select channel not pressed
+    if (digitalRead(buttonPins[3]))
+    {
+        previousMillis[3] = currentMillis;
+        pressCount[3] = 0;
+    }
+    // If select channel pressed
+    else
+    {
+        if (currentMillis - previousMillis[3] > bounceDelay)
+        {
+            previousMillis[3] = currentMillis;
+            ++pressCount[3];
+            if (pressCount[3] == minButtonPress)
+            {
+                counter[3]++;
+            }
+        }
+    }
+    if (counter[3] > 1)
+    {
+        counter[3] = 0;
+    }
+
+    return counter[3];
 }
