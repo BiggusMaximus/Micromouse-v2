@@ -19,8 +19,6 @@ float ki;
 float kp;
 float size_number;
 float front, left, right;
-unsigned long timerDelay = 3000;
-unsigned long lastTime = 0;
 bool pid_status = true;
 
 void debugging(String val)
@@ -104,14 +102,18 @@ void loop()
   {
     size_number = change_size();
   }
-  front = read_ultrasonic(trig2, echo2);
-  right = read_ultrasonic(trig1, echo1);
-  
+  // front = read_ultrasonic(trig2, echo2);
+  front = 10.0;
+  right = read_ultrasonic(trig2, echo2);
+
   byte pid_button = set_pid();
-  if(pid_button == 1){
+  if (pid_button == 1)
+  {
     pid(kp, ki, kd, front, right);
-    Serial.println(right);
-  }else{
+   
+  }
+  else
+  {
     stop_motor();
   }
 

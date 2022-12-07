@@ -16,6 +16,8 @@ float sp = 10.00;
 float dt = 0.001;
 float error, integralE, derivativeE, lastError;
 float PID;
+unsigned long timerDelay = 200;
+unsigned long lastTime = 0;
 
 void start_dcMotor()
 {
@@ -27,64 +29,70 @@ void start_dcMotor()
 
 void pid(float Kp, float Ki, float Kd, float depan, float kanan)
 {
-    if (kanan > 20)
+
+    if ((millis() - lastTime) > timerDelay)
     {
-        kanan = 20;
-    }
-    else
-    {
-        kanan = kanan;
-    }
-
-    if (depan <= 4)
-    {
-        digitalWrite(dir1, HIGH);
-        digitalWrite(dir2, LOW);
-        analogWrite(pwm1, 155);
-        analogWrite(pwm2, 100);
-    }
-
-    else
-    {
-        digitalWrite(dir1, HIGH);
-        digitalWrite(dir2, HIGH);
-
-        error = sp - kanan;
-        integralE = integralE + error;
-        derivativeE = error - lastError;
-
-        float P = Kp * error;
-        float I = (Ki * integralE) * dt;
-        float D = (Kd / dt) * derivativeE;
-
-        lastError = error;
-
-        PID = P + I + D;
-
-        pwmA = basePWM + PID;
-        if (pwmA > Upper)
+        if (kanan > 20)
         {
-            pwmA = Upper;
+            kanan = 20;
         }
-        if (pwmA < Lower)
+        else
         {
-            pwmA = Lower;
+            kanan = kanan;
         }
-        pwmKa = pwmA;
 
-        pwmB = basePWM - PID;
-        if (pwmB > Upper)
+        if (depan <= 4)
         {
-            pwmB = Upper;
+            digitalWrite(dir1, HIGH);
+            digitalWrite(dir2, LOW);
+            analogWrite(pwm1, 155);
+            analogWrite(pwm2, 100);
         }
-        if (pwmB < Lower)
-        {
-            pwmB = Lower;
-        }
-        pwmKi = pwmB;
 
-        analogWrite(pwm1, pwmKa);
-        analogWrite(pwm2, pwmKi);
+        else
+        {
+            digitalWrite(dir1, HIGH);
+            digitalWrite(dir2, HIGH);
+
+            error = sp - kanan;
+            integralE = integralE + error;
+            derivativeE = error - lastError;
+
+            float P = Kp * error;
+            float I = (Ki * integralE) * dt;
+            float D = (Kd / dt) * derivativeE;
+
+            lastError = error;
+
+            PID = P + I + D;
+
+            pwmA = basePWM + PID;
+            if (pwmA > Upper)
+            {
+                pwmA = Upper;
+            }
+            if (pwmA < Lower)
+            {
+                pwmA = Lower;
+            }
+            pwmKa = pwmA;
+
+            pwmB = basePWM - PID;
+            if (pwmB > Upper)
+            {
+                pwmB = Upper;
+            }
+            if (pwmB < Lower)
+            {
+                pwmB = Lower;
+            }
+            pwmKi = pwmB;
+
+            analogWrite(pwm1, pwmKa);
+            analogWrite(pwm2, pwmKi);
+        }
+        Serial.println(kanan);
+        lastTime = millis();
     }
 }
 
@@ -138,7 +146,8 @@ void pid_open_loop(float depan, float kanan)
     }
 }
 
-void stop_motor(){
+void stop_motor()
+{
     digitalWrite(dir1, HIGH);
     digitalWrite(dir2, LOW);
     analogWrite(pwm1, 0);
